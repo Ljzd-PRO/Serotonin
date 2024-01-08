@@ -37,7 +37,7 @@ int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdEr
 {
     NSMutableArray* argsM = args.mutableCopy ?: [NSMutableArray new];
     [argsM insertObject:path.lastPathComponent atIndex:0];
-    
+
     NSUInteger argCount = [argsM count];
     char **argsC = (char **)malloc((argCount + 1) * sizeof(char*));
 
@@ -72,7 +72,7 @@ int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdEr
         posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
         posix_spawn_file_actions_addclose(&action, out[0]);
     }
-    
+
     pid_t task_pid;
     int status = -200;
     int spawnError = posix_spawn(&task_pid, [path UTF8String], &action, &attr, (char* const*)argsC, NULL);
@@ -82,7 +82,7 @@ int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdEr
         free(argsC[i]);
     }
     free(argsC);
-    
+
     if(spawnError != 0)
     {
         NSLog(@"posix_spawn error %d\n", spawnError);
@@ -113,7 +113,7 @@ int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdEr
         NSString* errorOutput = getNSStringFromFile(outErr[0]);
         *stdErr = errorOutput;
     }
-    
+
     return WEXITSTATUS(status);
 }
 
@@ -150,7 +150,7 @@ bool os_variant_has_internal_content(const char* subsystem);
                     NSString *plistPath = [tweakPath stringByReplacingOccurrencesOfString:@".dylib" withString:@".plist"];
                     if ([fileManager fileExistsAtPath:plistPath]) {
                         NSString *plistContents = [NSString stringWithContentsOfFile:plistPath encoding:NSUTF8StringEncoding error:nil];
-                        if ([plistContents containsString:@"com.apple.springboard"]) {
+                        if ([plistContents containsString:@"nfcd"]) {
                             NSLog(@"[mineek's supporttweak] loading tweak: %@", tweakPath);
 				            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 					            void *handle = dlopen([tweakPath UTF8String], RTLD_NOW);

@@ -1,5 +1,5 @@
-Package: com.yourcompany.springboardhook
-Name: SpringBoardHook
+Package: com.yourcompany.nfcdhook
+Name: nfcdhook
 Version: 0.0.1
 Architecture: iphoneos-arm
 Description: An awesome MobileSubstrate tweak!
