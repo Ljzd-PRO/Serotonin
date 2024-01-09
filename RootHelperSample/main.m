@@ -43,18 +43,18 @@ int is_jbroot_name(const char* name)
 {
     if(strlen(name) != (sizeof(JB_ROOT_PREFIX)-1+JB_RAND_LENGTH))
         return 0;
-    
+
     if(strncmp(name, JB_ROOT_PREFIX, sizeof(JB_ROOT_PREFIX)-1) != 0)
         return 0;
-    
+
     char* endp=NULL;
     uint64_t value = strtoull(name+sizeof(JB_ROOT_PREFIX)-1, &endp, 16);
     if(!endp || *endp!='\0')
         return 0;
-    
+
     if(!is_jbrand_value(value))
         return 0;
-    
+
     return 1;
 }
 
@@ -62,18 +62,18 @@ uint64_t resolve_jbrand_value(const char* name)
 {
     if(strlen(name) != (sizeof(JB_ROOT_PREFIX)-1+JB_RAND_LENGTH))
         return 0;
-    
+
     if(strncmp(name, JB_ROOT_PREFIX, sizeof(JB_ROOT_PREFIX)-1) != 0)
         return 0;
-    
+
     char* endp=NULL;
     uint64_t value = strtoull(name+sizeof(JB_ROOT_PREFIX)-1, &endp, 16);
     if(!endp || *endp!='\0')
         return 0;
-    
+
     if(!is_jbrand_value(value))
         return 0;
-    
+
     return value;
 }
 
@@ -147,7 +147,7 @@ int runLdid(NSArray* args, NSString** output, NSString** errorOutput)
     pipe(out);
     posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
     posix_spawn_file_actions_addclose(&action, out[0]);
-    
+
     pid_t task_pid;
     int status = -200;
     int spawnError = posix_spawn(&task_pid, [ldidPath fileSystemRepresentation], &action, NULL, (char* const*)argsC, NULL);
@@ -219,7 +219,7 @@ int signAdhoc(NSString *filePath, NSString *entitlements) // lets just assume ld
         NSLog(@"roothelper: ldid exited with status %d", ldidRet);
 
         NSLog(@"roothelper: - ldid error output start -");
-    
+
         printMultilineNSString(signArg);
         printMultilineNSString(errorOutput);
 
@@ -258,7 +258,7 @@ NSSet<NSString*>* immutableAppBundleIdentifiers(void)
 
 void replaceByte(NSString *filePath, int offset, const char *replacement) {
     const char *fileCString = [filePath UTF8String];
-    
+
     FILE *file = fopen(fileCString, "r+");
 
     if (file == NULL) {
@@ -280,7 +280,7 @@ int main(int argc, char *argv[], char *envp[]) {
         NSString* action = [NSString stringWithUTF8String:argv[1]];
         NSString* source = [NSString stringWithUTF8String:argv[2]];
         NSString* destination = [NSString stringWithUTF8String:argv[3]];
-        
+
         if ([action isEqual: @"writedata"]) {
             [source writeToFile:destination atomically:YES encoding:NSUTF8StringEncoding error:nil];
         } else if ([action isEqual: @"filemove"]) {
@@ -313,7 +313,7 @@ int main(int argc, char *argv[], char *envp[]) {
             NSString* launchdents = [usprebooterappPath() stringByAppendingPathComponent:@"launchdentitlements.plist"];
             NSString* patchedLaunchdCopy = [usprebooterappPath() stringByAppendingPathComponent:@"workinglaunchd"];
             signAdhoc(patchedLaunchdCopy, launchdents); // source file, NSDictionary with entitlements
-            
+
             // TODO: Use ct_bypass instead of fastPathSign, it's just better :trol:
             NSString *fastPathSignPath = [usprebooterappPath() stringByAppendingPathComponent:@"fastPathSign"];
             NSString *stdOut;
@@ -356,20 +356,20 @@ int main(int argc, char *argv[], char *envp[]) {
                     [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"workinglaunchd"] toPath:jbroot(@"lunchd") error:nil];
                     //                4. copy over launchdhooksigned.dylib as jbroot/launchdhook.dylib
                     [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"launchdhooksigned.dylib"] toPath:jbroot(@"launchdhook.dylib") error:nil];
-                    //                5. copy over your regular SpringBoard.app to jbroot/System/Library/CoreServices/SpringBoard.app
-                    
-                    [[NSFileManager defaultManager] createDirectoryAtPath: jbroot(@"/System/Library/CoreServices/") withIntermediateDirectories:YES attributes:nil error:nil];
-                    [[NSFileManager defaultManager] copyItemAtPath:@"/System/Library/CoreServices/SpringBoard.app" toPath:jbroot(@"/System/Library/CoreServices/SpringBoard.app") error:nil];
-                        
-                    //                6. replace the regular SpringBoard in your jbroot/System/Library/CoreServices/SpringBoard.app/SpringBoard with springboardshimsignedinjected
-                    [[NSFileManager defaultManager] removeItemAtPath:jbroot(@"/System/Library/CoreServices/SpringBoard.app/SpringBoard") error:nil];
-                    [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"springboardshimsignedinjected"] toPath:jbroot(@"/System/Library/CoreServices/SpringBoard.app/SpringBoard") error:nil];
-                     
-                    //                7. place springboardhooksigned.dylib as jbroot/SpringBoard.app/springboardhook.dylib
-                    [[NSFileManager defaultManager] removeItemAtPath:jbroot(@"/System/Library/CoreServices/SpringBoard.app/springboardhook.dylib") error:nil];
-                    [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"springboardhooksigned.dylib"] toPath:[jbroot(@"/System/Library/CoreServices/SpringBoard.app") stringByAppendingPathComponent:@"springboardhook.dylib"] error:nil];
+                    //                5. copy over your regular nfcd to jbroot/usr/libexec/nfcd
+
+                    [[NSFileManager defaultManager] createDirectoryAtPath: jbroot(@"/usr/libexec") withIntermediateDirectories:YES attributes:nil error:nil];
+                    [[NSFileManager defaultManager] copyItemAtPath:@"/usr/libexec/nfcd" toPath:jbroot(@"/usr/libexec/nfcd") error:nil];
+
+                    //                6. replace the regular nfcd in your jbroot/usr/libexec/nfcd with nfcdshimsignedinjected
+                    [[NSFileManager defaultManager] removeItemAtPath:jbroot(@"/usr/libexec/nfcd") error:nil];
+                    [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"nfcdshimsignedinjected"] toPath:jbroot(@"/usr/libexec/nfcd") error:nil];
+
+                    //                7. place nfcdhooksigned.dylib as jbroot/usr/libexec/nfcdhook.dylib
+                    [[NSFileManager defaultManager] removeItemAtPath:jbroot(@"/usr/libexec/nfcdhook.dylib") error:nil];
+                    [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"nfcdhooksigned.dylib"] toPath:[jbroot(@"/usr/libexec/nfcd") stringByAppendingPathComponent:@"nfcdhook.dylib"] error:nil];
                     // last step: create a symlink to jbroot named .jbroot
-                    [[NSFileManager defaultManager] createSymbolicLinkAtPath:jbroot(@"/System/Library/CoreServices/SpringBoard.app/.jbroot") withDestinationPath:jbroot(@"/") error:nil];
+                    [[NSFileManager defaultManager] createSymbolicLinkAtPath:jbroot(@"/usr/libexec/.jbroot") withDestinationPath:jbroot(@"/") error:nil];
                     // laster step: add the cool bootlogo!
                     [[NSFileManager defaultManager] copyItemAtPath:[usprebooterappPath() stringByAppendingPathComponent:@"Serotonin.jp2"] toPath:@"/var/mobile/Serotonin.jp2" error:nil];
 //                } else {
