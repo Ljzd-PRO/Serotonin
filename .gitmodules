@@ -1,11 +1,11 @@
 [submodule "ChOma"]
 	path = ChOma
-	url = https://github.com/opa334/ChOma
+	url = https://github.com/opa334/ChOma.git
 
 [submodule "insert_dylib"]
 	path = insert_dylib
-	url = https://github.com/Tyilo/insert_dylib
+	url = https://github.com/Tyilo/insert_dylib.git
 
-[submodule "headers"]
+[submodule "roothide"]
 	path = roothide
 	url = https://github.com/roothide/headers.git
