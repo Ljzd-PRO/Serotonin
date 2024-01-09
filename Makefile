@@ -27,14 +27,8 @@ Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	echo "[*] Building nfcd Hook"
 	$(MAKE) -C RootHelperSample/launchdshim/nfcdshim/nfcdhook
 
-	echo "[*] Signing nfcd hook"
-	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/nfcdhook/.theos/obj/debug/nfcdhook.dylib -r -o RootHelperSample/launchdshim/nfcdshim/nfcdhook/nfcdhooksigned.dylib
-
 	echo "[*] Building nfcd shim"
 	$(MAKE) -C RootHelperSample/launchdshim/nfcdshim
-
-	echo "[*] Signing nfcd shim"
-	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/.theos/obj/debug/nfcdshim -r -o RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned
 
 	# jank workaround at best, can someone else please fix this weird file dependency? – bomberfish
 	echo "[*] Copying fastPathSign"
