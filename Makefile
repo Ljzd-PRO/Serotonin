@@ -4,14 +4,15 @@ LDID = ldid
 MACOSX_SYSROOT = $(shell xcrun -sdk macosx --show-sdk-path)
 TARGET_SYSROOT = $(shell xcrun -sdk iphoneos --show-sdk-path)
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(PWD)/roothide
 
 all: Serotonin.tipa
 
 Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	echo "[*] Building insert_dylib for host"
 	$(SHELL) -c "cd insert_dylib; xcodebuild"
-	ln -s $(PWD)/insert_dylib/build/Release/insert_dylib /usr/local/bin/insert_dylib
-	chmod +x /usr/local/bin/insert_dylib
+	chmod +x insert_dylib/build/Release/insert_dylib
+	INSERT_DYLIB=insert_dylib/build/Release/insert_dylib
 
 	echo "[*] Building ChOma for host"
 	$(MAKE) -C ChOma
@@ -33,16 +34,16 @@ Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	$(MAKE) -C RootHelperSample/launchdshim/nfcdshim/nfcdhook
 
 	echo "[*] Signing nfcd hook"
-	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/nfcdhook/.theos/obj/debug/nfcdhook.dylib -o RootHelperSample/launchdshim/nfcdshim/nfcdhook/nfcdhooksigned.dylib
+	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/nfcdhook/.theos/obj/debug/nfcdhook.dylib -r -o RootHelperSample/launchdshim/nfcdshim/nfcdhook/nfcdhooksigned.dylib
 
 	echo "[*] Building nfcd shim"
 	$(MAKE) -C RootHelperSample/launchdshim/nfcdshim
 
 	echo "[*] Signing nfcdshim"
-	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/nfcdshim -r -o RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned
+	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/.theos/obj/debug/nfcdshim -r -o RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned
 
 	echo "[*] Injecting nfcdhook to nfcdshim"
-	insert_dylib @loader_path/nfcdhook.dylib RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned RootHelperSample/launchdshim/nfcdshim/nfcdshimsignedinjected --all-yes
+	echo "${INSERT_DYLIB} @loader_path/nfcdhook.dylib RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned RootHelperSample/launchdshim/nfcdshim/nfcdshimsignedinjected --all-yes"
 
 	# jank workaround at best, can someone else please fix this weird file dependency? – bomberfish
 	echo "[*] Copying fastPathSign"
