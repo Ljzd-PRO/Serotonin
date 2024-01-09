@@ -8,7 +8,7 @@
 <h6 align="center"> Should Support iOS/iPadOS 16.0 - 16.6.1  </h6>
 
 > [!WARNING]
-> This fork hooked nfcd (`/usr/libexec/nfcd`) but not SpringBoard, not sure it will work.
+> This fork hooked nfcd (`/usr/libexec/nfcd`) but **not** SpringBoard, not sure it will work.
 
 ## How do I use this?
 To use this app, you need to be on a supported version (mentioned above), and have [TrollStore](https://github.com/opa334/TrollStore/) installed. You can follow [this guide](https://ios.cfw.guide/installing-trollstore/) to install it on your device. Please note that this tool doesn't support iOS 17.0 despite of it having TrollStore.
