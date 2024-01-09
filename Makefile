@@ -10,7 +10,6 @@ Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	echo "[*] Building insert_dylib for host"
 	$(SHELL) -c "cd insert_dylib; xcodebuild"
 	chmod +x insert_dylib/build/Release/insert_dylib
-	INSERT_DYLIB=insert_dylib/build/Release/insert_dylib
 
 	echo "[*] Building ChOma for host"
 	$(MAKE) -C ChOma
@@ -41,7 +40,7 @@ Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/.theos/obj/debug/nfcdshim -r -o RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned
 
 	echo "[*] Injecting nfcdhook to nfcdshim"
-	echo "${INSERT_DYLIB} @loader_path/nfcdhook.dylib RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned RootHelperSample/launchdshim/nfcdshim/nfcdshimsignedinjected --all-yes"
+	insert_dylib/build/Release/insert_dylib @loader_path/nfcdhook.dylib RootHelperSample/launchdshim/nfcdshim/nfcdshimsigned RootHelperSample/launchdshim/nfcdshim/nfcdshimsignedinjected --all-yes
 
 	# jank workaround at best, can someone else please fix this weird file dependency? – bomberfish
 	echo "[*] Copying fastPathSign"
