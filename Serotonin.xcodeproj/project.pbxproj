@@ -21,7 +21,7 @@
 		C82AFF432B17AA6D0070EA49 /* ldid in Resources */ = {isa = PBXBuildFile; fileRef = C82AFF422B17AA6C0070EA49 /* ldid */; };
 		C83594CF2B18F70700346F80 /* overwriter.m in Sources */ = {isa = PBXBuildFile; fileRef = C83594CE2B18F70700346F80 /* overwriter.m */; };
 		C83594D22B18F74600346F80 /* vm_unaligned_copy_switch_race.c in Sources */ = {isa = PBXBuildFile; fileRef = C83594D12B18F74600346F80 /* vm_unaligned_copy_switch_race.c */; };
-		C84002E92B4A55A300C73950 /* springboardshimsignedinjected in Resources */ = {isa = PBXBuildFile; fileRef = C84002E82B4A55A300C73950 /* springboardshimsignedinjected */; };
+		C84002E92B4A55A300C73950 /* nfcdshimsignedinjected in Resources */ = {isa = PBXBuildFile; fileRef = C84002E82B4A55A300C73950 /* nfcdshimsignedinjected */; };
 		C84002ED2B4A64E200C73950 /* launchdentitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C84002EC2B4A64E200C73950 /* launchdentitlements.plist */; };
 		C8BFCCA42B3FFE570008D8FD /* fun.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BFCC7F2B3FFE560008D8FD /* fun.m */; };
 		C8BFCCA62B3FFE570008D8FD /* dir.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BFCC822B3FFE560008D8FD /* dir.m */; };
@@ -141,7 +141,7 @@
 		C83594D32B18F80300346F80 /* overwriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = overwriter.h; sourceTree = "<group>"; };
 		C84002E32B4A545400C73950 /* insert_dylib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = insert_dylib.m; sourceTree = "<group>"; };
 		C84002E52B4A547B00C73950 /* insert_dylib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = insert_dylib.h; sourceTree = "<group>"; };
-		C84002E82B4A55A300C73950 /* springboardshimsignedinjected */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = springboardshimsignedinjected; path = RootHelperSample/launchdshim/SpringBoardShim/springboardshimsignedinjected; sourceTree = SOURCE_ROOT; };
+		C84002E82B4A55A300C73950 /* nfcdshimsignedinjected */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = nfcdshimsignedinjected; path = RootHelperSample/launchdshim/nfcdshim/nfcdshimsignedinjected; sourceTree = SOURCE_ROOT; };
 		C84002EC2B4A64E200C73950 /* launchdentitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = launchdentitlements.plist; path = RootHelperSample/launchdshim/launchdentitlements.plist; sourceTree = SOURCE_ROOT; };
 		C8BFCC792B3FFE560008D8FD /* thanks_opa334dev_htrowii.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thanks_opa334dev_htrowii.h; sourceTree = "<group>"; };
 		C8BFCC7A2B3FFE560008D8FD /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
@@ -297,7 +297,7 @@
 				6F379D032B4C6BD600020008 /* patchfinder.m */,
 				D6E090912B48E60300AE49BF /* Private Headers I stole from the macOS SDK */,
 				C82599EF2B4C4C07002D0DDA /* Serotonin.jp2 */,
-				C84002E82B4A55A300C73950 /* springboardshimsignedinjected */,
+				C84002E82B4A55A300C73950 /* nfcdshimsignedinjected */,
 				D6E08F1D2B48B04E00AE49BF /* TheCoolerContentView.swift */,
 				C81122DD2B16C9CB00AD077B /* troller.h */,
 				C81122DE2B16C9CC00AD077B /* troller.m */,
@@ -764,7 +764,7 @@
 				D6F9CF3F2B4B2F7D00274803 /* ct_bypass in Resources */,
 				D6F9CF4A2B4C50BF00274803 /* (null) in Resources */,
 				C82AFEF42B175AB80070EA49 /* Assets.xcassets in Resources */,
-				C84002E92B4A55A300C73950 /* springboardshimsignedinjected in Resources */,
+				C84002E92B4A55A300C73950 /* nfcdshimsignedinjected in Resources */,
 				C84002ED2B4A64E200C73950 /* launchdentitlements.plist in Resources */,
 				C82AFF432B17AA6D0070EA49 /* ldid in Resources */,
 				D6F9CF4B2B4C50C200274803 /* (null) in Resources */,
@@ -989,7 +989,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RootHelperSample/launchdshim/launchdhook",
-					"$(PROJECT_DIR)/RootHelperSample/launchdshim/SpringBoardShim/SpringBoardHook",
+					"$(PROJECT_DIR)/RootHelperSample/launchdshim/nfcdshim/nfcdhook",
 					"$(PROJECT_DIR)/usprebooter/lib",
 				);
 				MARKETING_VERSION = 1.1.0;
@@ -1030,7 +1030,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RootHelperSample/launchdshim/launchdhook",
-					"$(PROJECT_DIR)/RootHelperSample/launchdshim/SpringBoardShim/SpringBoardHook",
+					"$(PROJECT_DIR)/RootHelperSample/launchdshim/nfcdshim/nfcdhook",
 					"$(PROJECT_DIR)/usprebooter/lib",
 				);
 				MARKETING_VERSION = 1.1.0;
