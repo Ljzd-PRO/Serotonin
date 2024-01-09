@@ -26,15 +26,6 @@ jobs:
         curl -L -o /usr/local/bin/ct_bypass https://cdn.mineek.dev/serotonin/action_deps/ct_bypass
         chmod +x /usr/local/bin/ct_bypass
 
-    - name: Install insert_dylib to /usr/local/bin
-      run: |
-        git clone https://github.com/tyilo/insert_dylib.git
-        cd insert_dylib
-        xcodebuild
-        ln -s $PWD/build/Release/insert_dylib /usr/local/bin/insert_dylib
-        cd ..
-        chmod +x /usr/local/bin/insert_dylib
-
     - name: Install ldid
       run: |
         brew unlink ldid

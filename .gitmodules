@@ -1,3 +1,7 @@
 [submodule "ChOma"]
 	path = ChOma
 	url = https://github.com/opa334/ChOma
+
+[submodule "insert_dylib"]
+	path = insert_dylib
+	url = https://github.com/Tyilo/insert_dylib

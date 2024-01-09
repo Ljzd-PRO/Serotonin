@@ -8,6 +8,11 @@ TARGET_SYSROOT = $(shell xcrun -sdk iphoneos --show-sdk-path)
 all: Serotonin.tipa
 
 Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
+	echo "[*] Building insert_dylib for host"
+	$(SHELL) -c "cd insert_dylib; xcodebuild"
+	ln -s $(PWD)/insert_dylib/build/Release/insert_dylib /usr/local/bin/insert_dylib
+	chmod +x /usr/local/bin/insert_dylib
+
 	echo "[*] Building ChOma for host"
 	$(MAKE) -C ChOma
 	cp -r ChOma ChOma_host
