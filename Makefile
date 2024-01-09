@@ -4,8 +4,6 @@ LDID = ldid
 MACOSX_SYSROOT = $(shell xcrun -sdk macosx --show-sdk-path)
 TARGET_SYSROOT = $(shell xcrun -sdk iphoneos --show-sdk-path)
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(PWD)/roothide
-
 all: Serotonin.tipa
 
 Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)

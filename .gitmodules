@@ -5,7 +5,3 @@
 [submodule "insert_dylib"]
 	path = insert_dylib
 	url = https://github.com/Tyilo/insert_dylib.git
-
-[submodule "roothide"]
-	path = roothide
-	url = https://github.com/roothide/headers.git
