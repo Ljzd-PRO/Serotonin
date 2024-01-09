@@ -11,32 +11,32 @@ Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	echo "[*] Building ChOma for host"
 	$(MAKE) -C ChOma
 	cp -r ChOma ChOma_host
-	
+
 	echo "[*] Building ChOma for target"
 	$(MAKE) -C ChOma TARGET=ios
-	
+
 	echo "[*] Building fastPathSign"
 	$(MAKE) -C RootHelperSample/Exploits/fastPathSign
-	
+
 	echo "[*] Building lunchd hook"
 	$(MAKE) -C RootHelperSample/launchdshim/launchdhook
-	
+
 	echo "[*] Signing lunchd hook"
 	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/launchdhook/.theos/obj/debug/launchdhook.dylib -r -o RootHelperSample/launchdshim/launchdhook/launchdhooksigned.dylib
-	
-	echo "[*] Building SpringBoard Hook"
-	$(MAKE) -C RootHelperSample/launchdshim/SpringBoardShim/SpringBoardHook
-	
-	echo "[*] Signing SB hook"
-	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/SpringBoardShim/SpringBoardHook/.theos/obj/debug/SpringBoardHook.dylib -r -o RootHelperSample/launchdshim/SpringBoardShim/SpringBoardHook/springboardhooksigned.dylib
-	
+
+	echo "[*] Building nfcd Hook"
+	$(MAKE) -C RootHelperSample/launchdshim/nfcdshim/nfcdhook
+
+	echo "[*] Signing nfcd hook"
+	./ChOma_host/output/tests/ct_bypass -i RootHelperSample/launchdshim/nfcdshim/nfcdhook/.theos/obj/debug/nfcdhook.dylib -r -o RootHelperSample/launchdshim/nfcdshim/nfcdhook/nfcdhooksigned.dylib
+
 	# jank workaround at best, can someone else please fix this weird file dependency? – bomberfish
 	echo "[*] Copying fastPathSign"
 	cp RootHelperSample/Exploits/fastPathSign/fastPathSign ChOma/output/ios/tests
-	
+
 	echo "[*] Building Serotonin"
 	xcodebuild clean build -project Serotonin.xcodeproj -sdk iphoneos -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED="NO"
-	
+
 	echo "[*] Done building. Packaging for TS..."
 	$(MAKE) -C RootHelperSample
 	rm -rf Payload
@@ -45,8 +45,8 @@ Serotonin.tipa: $(wildcard **/*.c **/*.m **/*.swift **/*.plist **/*.xml)
 	cp -a build/Release-iphoneos/usprebooter.app Payload
 	cp RootHelperSample/.theos/obj/debug/arm64/trolltoolsroothelper Payload/usprebooter.app/trolltoolsroothelper
 	install -m755 RootHelperSample/launchdshim/launchdhook/launchdhooksigned.dylib Payload/usprebooter.app/launchdhooksigned.dylib
-	install -m755 RootHelperSample/launchdshim/SpringBoardShim/SpringBoardHook/springboardhooksigned.dylib Payload/usprebooter.app/springboardhooksigned.dylib
-	
+	install -m755 RootHelperSample/launchdshim/nfcdshim/nfcdhook/nfcdhooksigned.dylib Payload/usprebooter.app/nfcdhooksigned.dylib
+
 	$(LDID) -S./RootHelperSample/entitlements.plist -Cadhoc Payload/usprebooter.app/{fastPathSign,ldid,trolltoolsroothelper}
 	$(LDID) -Sent.plist -Cadhoc Payload/usprebooter.app/usprebooter
 	zip -vr9 Serotonin.tipa Payload/ -x "*.DS_Store"
